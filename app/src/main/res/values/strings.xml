@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">cats</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cat_image">cat image</string>
+    <string name="save">save to gallery</string>
+    <string name="albumName">cute_cats</string>
+</resources>
