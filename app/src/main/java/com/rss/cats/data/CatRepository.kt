@@ -1,5 +1,8 @@
 package com.rss.cats.data
 
-class CatRepository(private val api: Api) : ApiRequest() {
-    suspend fun getCats(pageSize: Int, page: Int): List<Any> = apiRequest { api.getCats(pageSize, page) }
+import com.rss.cats.models.Cat
+
+class CatRepository(private val api: Api) : ApiRequestWrapper() {
+    suspend fun getCats(pageSize: Int, page: Int): List<Cat> =
+        apiRequest { api.getCats(pageSize, page) }
 }

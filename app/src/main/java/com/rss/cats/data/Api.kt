@@ -13,10 +13,10 @@ interface Api {
     suspend fun getCats(
         @Query("limit") amount: Int,
         @Query("page") page: Int
-    ) : Response<List<Cat>>
+    ): Response<List<Cat>>
 
     companion object {
-        operator fun invoke() : Api {
+        operator fun invoke(): Api {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://api.thecatapi.com/v1/images/")

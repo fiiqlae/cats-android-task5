@@ -1,26 +1,25 @@
 package com.rss.cats.ui
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.rss.cats.R
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.rss.cats.databinding.FragmentPreviewBinding
-import com.rss.cats.models.Cat
+import com.rss.cats.models.SharedViewModel
 
-
-class PreviewFragment(private val cat: Cat) : Fragment() {
+class PreviewFragment : Fragment() {
     private var _binding: FragmentPreviewBinding? = null
     private val binding get() = requireNotNull(_binding)
 
+    private val viewModel: SharedViewModel by activityViewModels()
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentPreviewBinding.inflate(inflater, container, false)
@@ -29,23 +28,14 @@ class PreviewFragment(private val cat: Cat) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Glide.with(view.context)
-            .load(cat.url)
-            .placeholder(R.mipmap.bg)
-            .override(cat.width, cat.height)
-            .into(binding.imagePreview)
+
+        viewModel.selectedCat.observe(
+            viewLifecycleOwner,
+            Observer { viewModel.imageLoader.loadImage(binding.imagePreview, it.url) })
 
         binding.saveBtn.setOnClickListener {
-            saveToGallery((binding.imagePreview.drawable as BitmapDrawable).bitmap)
+            viewModel.saveCat(binding.imagePreview)
+            Toast.makeText(context, "File saved", Toast.LENGTH_SHORT).show()
         }
-
-    }
-
-    private fun saveToGallery(bitmap: Bitmap) {
-        MediaStore.Images.Media.insertImage(requireActivity().contentResolver,
-            bitmap,
-            "${System.currentTimeMillis()}",
-            "")
-        Toast.makeText(context, "file saved", Toast.LENGTH_SHORT).show()
     }
 }

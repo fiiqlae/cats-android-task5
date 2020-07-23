@@ -7,10 +7,11 @@ import com.rss.cats.data.CatRepository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class CatListViewModel: ViewModel() {
+class CatViewModel : ViewModel() {
 
     private val repo: CatRepository = CatRepository(Api())
     private var currentPage: Int = 0
+
     var allCats = MutableLiveData<List<Cat>>()
 
     init {
@@ -19,19 +20,20 @@ class CatListViewModel: ViewModel() {
 
     private fun refresh() {
         GlobalScope.launch {
-            allCats.postValue(repo.getCats(pageSize, currentPage) as List<Cat>?)
+            allCats.postValue(repo.getCats(pageSize, currentPage))
         }
     }
 
     fun loadNextPage() {
         currentPage += 1
         GlobalScope.launch {
-            val currentCats:MutableList<Cat> = allCats.value as MutableList<Cat>
+            val currentCats: MutableList<Cat> = allCats.value as MutableList<Cat>
             val newCats = repo.getCats(pageSize, currentPage)
-            allCats.postValue(listOf(currentCats, newCats).flatten() as List<Cat>?)
+            allCats.postValue(listOf(currentCats, newCats).flatten())
         }
     }
-    private companion object {
-        const val pageSize = 15
+
+    companion object {
+        private const val pageSize = 15
     }
 }
