@@ -1,5 +1,6 @@
 package com.rss.cats.di
 
+import android.content.Context
 import com.rss.cats.data.*
 import dagger.Module
 import dagger.Provides
@@ -10,8 +11,11 @@ class DataModule {
     fun provideRepository(): Repository = CatRepository()
 
     @Provides
-    fun provideImageSaver(): ImageSaver = SimpleImageSaver()
+    fun provideImageSaver(context: Context): ImageSaver = SimpleImageSaver(context.contentResolver)
 
     @Provides
     fun provideImageLoader(): ImageLoader = SimpleImageLoader()
+
+    @Provides
+    fun provideContext(): Context = App.context
 }

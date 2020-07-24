@@ -8,7 +8,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.rss.cats.R
 
-private val STORAGE_PERMISSION_CODE = 101
+private const val STORAGE_PERMISSION_CODE = 101
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

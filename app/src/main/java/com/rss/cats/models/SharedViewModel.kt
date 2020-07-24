@@ -1,32 +1,29 @@
 package com.rss.cats.models
 
-import android.app.Application
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.rss.cats.data.ImageLoader
 import com.rss.cats.data.ImageSaver
 import com.rss.cats.di.App
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SharedViewModel(application: Application) : AndroidViewModel(application) {
+class SharedViewModel : ScopedViewModel() {
 
     private val _selectedCat = MutableLiveData<Cat>()
     val selectedCat: LiveData<Cat> get() = _selectedCat
-    private var app: Application? = null
 
-    @Inject
-    lateinit var imageLoader: ImageLoader
     @Inject
     lateinit var imageSaver: ImageSaver
 
+    @Inject
+    lateinit var imageLoader: ImageLoader
+
     init {
         App.daggerComponent.inject(this)
-        app = application
     }
 
     fun selectCat(cat: Cat) {
@@ -38,15 +35,13 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun saveCat(imageView: ImageView) {
-        viewModelScope.launch {
-            app?.contentResolver?.let {
-                imageSaver.saveImage(
-                    imageView,
-                    it,
-                    requireNotNull(selectedCat.value)
-                )
-            }
+        scope.launch {
+            imageSaver.saveImage(
+                selectedCat.value?.let {
+                    imageView.drawable.toBitmap(it.width, it.height)
+                }
+            )
         }
-        Toast.makeText(imageView.context, "image saved", Toast.LENGTH_SHORT).show()
+        Toast.makeText(imageView.context, "image saved", Toast.LENGTH_LONG).show()
     }
 }

@@ -17,7 +17,6 @@ import com.rss.cats.models.CatViewModel
 import com.rss.cats.models.SharedViewModel
 import javax.inject.Inject
 
-
 class CatListFragment : Fragment(), CatListener {
 
     private var _binding: FragmentCatListBinding? = null
