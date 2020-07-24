@@ -1,7 +1,6 @@
 package com.rss.cats.models
 
 import android.app.Application
-import android.content.ContentResolver
 import android.widget.ImageView
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -17,14 +16,16 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     private val _selectedCat = MutableLiveData<Cat>()
     val selectedCat: LiveData<Cat> get() = _selectedCat
-    private var resolver: ContentResolver? = null
+    private var app: Application? = null
 
-    @Inject lateinit var imageLoader: ImageLoader
-    @Inject lateinit var imageSaver: ImageSaver
+    @Inject
+    lateinit var imageLoader: ImageLoader
+    @Inject
+    lateinit var imageSaver: ImageSaver
 
     init {
         App.daggerComponent.inject(this)
-        resolver = application.contentResolver
+        app = application
     }
 
     fun selectCat(cat: Cat) {
@@ -33,7 +34,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     fun saveCat(imageView: ImageView) {
         GlobalScope.launch {
-            resolver?.let { imageSaver.saveImage(imageView, it, requireNotNull(selectedCat.value)) }
+            app?.contentResolver?.let { imageSaver.saveImage(imageView, it, requireNotNull(selectedCat.value)) }
         }
     }
 }

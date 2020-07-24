@@ -5,4 +5,7 @@
     <string name="cat_image">cat image</string>
     <string name="save">save to gallery</string>
     <string name="albumName">cute_cats</string>
+    <string name="dialog_network_error">Network is unavailable, please proceed after the internet connection is established</string>
+    <string name="ok">ookay</string>
+    <string name="error">Error!</string>
 </resources>

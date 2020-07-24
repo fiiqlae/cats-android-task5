@@ -9,7 +9,7 @@ import com.rss.cats.models.SharedViewModel
 import com.rss.cats.ui.CatAdapter
 import dagger.Component
 
-@Component(modules = [DataModule::class])
+@Component(modules = [DataModule::class, NetworkingModule::class])
 interface DaggerComponent {
     fun getImageSaver(): ImageSaver
     fun getImageLoader(): ImageLoader

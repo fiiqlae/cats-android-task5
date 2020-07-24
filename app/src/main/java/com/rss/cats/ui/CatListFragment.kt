@@ -14,6 +14,7 @@ import com.rss.cats.models.Cat
 import com.rss.cats.models.CatViewModel
 import com.rss.cats.models.SharedViewModel
 
+
 class CatListFragment : Fragment(), CatListener {
 
     private var _binding: FragmentCatListBinding? = null
@@ -35,10 +36,11 @@ class CatListFragment : Fragment(), CatListener {
         super.onViewCreated(view, savedInstanceState)
         val adapter = CatAdapter(this)
         configureRecycler(adapter)
-
-        catViewModel.allCats.observe(viewLifecycleOwner, Observer { cats ->
-            cats?.let { adapter.setDataSet(it) }
-        })
+        catViewModel.allCats.observe(
+            viewLifecycleOwner,
+            Observer { cats ->
+                cats?.let { adapter.setDataSet(it) }
+            })
     }
 
     private fun configureRecycler(adapter: CatAdapter) {
