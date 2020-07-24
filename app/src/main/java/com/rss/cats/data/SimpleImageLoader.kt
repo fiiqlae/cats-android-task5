@@ -4,8 +4,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import javax.inject.Inject
 
-class SimpleImageLoader : ImageLoader {
+class SimpleImageLoader @Inject constructor() : ImageLoader {
 
     override fun loadImage(imageView: ImageView, url: String) {
         Glide.with(imageView.context)

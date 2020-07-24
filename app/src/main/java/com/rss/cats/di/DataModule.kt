@@ -1,21 +1,17 @@
 package com.rss.cats.di
 
-import com.rss.cats.data.ImageLoader
-import com.rss.cats.data.ImageSaver
-import com.rss.cats.data.SimpleImageLoader
-import com.rss.cats.data.SimpleImageSaver
+import com.rss.cats.data.*
 import dagger.Module
 import dagger.Provides
 
 @Module
 class DataModule {
     @Provides
-    fun getImageSaver(): ImageSaver {
-        return SimpleImageSaver()
-    }
+    fun provideRepository(): Repository = CatRepository()
 
     @Provides
-    fun provideImageLoader(): ImageLoader {
-        return SimpleImageLoader()
-    }
+    fun provideImageSaver(): ImageSaver = SimpleImageSaver()
+
+    @Provides
+    fun provideImageLoader(): ImageLoader = SimpleImageLoader()
 }

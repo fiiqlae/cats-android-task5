@@ -9,10 +9,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.rss.cats.R
+import com.rss.cats.data.ImageLoader
 import com.rss.cats.databinding.FragmentCatListBinding
+import com.rss.cats.di.App
 import com.rss.cats.models.Cat
 import com.rss.cats.models.CatViewModel
 import com.rss.cats.models.SharedViewModel
+import javax.inject.Inject
 
 
 class CatListFragment : Fragment(), CatListener {
@@ -20,8 +23,13 @@ class CatListFragment : Fragment(), CatListener {
     private var _binding: FragmentCatListBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val catViewModel: CatViewModel by activityViewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
+
+    @Inject
+    lateinit var imageLoader: ImageLoader
+
+    @Inject
+    lateinit var catViewModel: CatViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,12 +37,13 @@ class CatListFragment : Fragment(), CatListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCatListBinding.inflate(inflater, container, false)
+        App.daggerComponent.inject(this)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = CatAdapter(this)
+        val adapter = CatAdapter(this, imageLoader)
         configureRecycler(adapter)
         catViewModel.allCats.observe(
             viewLifecycleOwner,
@@ -72,7 +81,7 @@ class CatListFragment : Fragment(), CatListener {
             .replace(R.id.placeholder, previewFragment).addToBackStack("preview").commit()
     }
 
-    companion object {
+    private companion object {
         private const val spanCount = 3
     }
 }

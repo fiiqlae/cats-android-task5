@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -31,11 +30,10 @@ class PreviewFragment : Fragment() {
 
         viewModel.selectedCat.observe(
             viewLifecycleOwner,
-            Observer { viewModel.imageLoader.loadImage(binding.imagePreview, it.url) })
+            Observer { viewModel.loadImageIntoFrame(binding.imagePreview, it) })
 
         binding.saveBtn.setOnClickListener {
             viewModel.saveCat(binding.imagePreview)
-            Toast.makeText(context, "File saved", Toast.LENGTH_SHORT).show()
         }
     }
 }
