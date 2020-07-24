@@ -1,16 +1,17 @@
 package com.rss.cats.data
 
 import android.content.ContentResolver
-import android.graphics.drawable.BitmapDrawable
 import android.provider.MediaStore
 import android.widget.ImageView
+import androidx.core.graphics.drawable.toBitmap
+import com.rss.cats.models.Cat
 
-class SimpleImageSaver(private val contentResolver: ContentResolver) : ImageSaver {
-    override fun saveimage(imageView: ImageView) {
+class SimpleImageSaver : ImageSaver {
+    override fun saveImage(imageView: ImageView, contentResolver: ContentResolver, cat: Cat) {
         @Suppress("DEPRECATION")
         MediaStore.Images.Media.insertImage(
             contentResolver,
-            (imageView.drawable as BitmapDrawable).bitmap,
+            imageView.drawable.toBitmap(cat.width, cat.height),
             "${System.currentTimeMillis()}",
             ""
         )

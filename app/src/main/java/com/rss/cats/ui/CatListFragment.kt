@@ -33,7 +33,7 @@ class CatListFragment : Fragment(), CatListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = CatAdapter(this, sharedViewModel.imageLoader)
+        val adapter = CatAdapter(this)
         configureRecycler(adapter)
 
         catViewModel.allCats.observe(viewLifecycleOwner, Observer { cats ->

@@ -4,17 +4,24 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
-import com.rss.cats.data.SimpleImageLoader
+import com.rss.cats.data.ImageLoader
 import com.rss.cats.databinding.CatListElementBinding
+import com.rss.cats.di.App
 import com.rss.cats.models.Cat
+import javax.inject.Inject
 
 class CatAdapter(
-    private val listener: CatListener,
-    private val imageLoader: SimpleImageLoader
+    private val listener: CatListener
 ) : RecyclerView.Adapter<CatAdapter.CatViewHolder>() {
 
     private var catDataSet = emptyList<Cat>()
     private val set = ConstraintSet()
+
+    @Inject lateinit var imageLoader: ImageLoader
+
+    init {
+        App.daggerComponent.inject(this)
+    }
 
     inner class CatViewHolder(val binding: CatListElementBinding) :
         RecyclerView.ViewHolder(binding.root) {
